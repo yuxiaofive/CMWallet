@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,6 +134,12 @@ void report_matched_credential(uint32_t wasm_version, cJSON* matched_doc, cJSON*
             {
                 printf("AddEntryToSet %s, metadata: %s\n", matched_id, metadata);
                 AddEntryToSet(matched_id, creds_blob + icon_start_int, icon_len, title, subtitle, explainer, NULL, metadata, set_id, doc_idx);
+                char *dedup_id = cJSON_GetStringValue(cJSON_GetObjectItem(c, "dedupId"));
+                cJSON *rank_item = cJSON_GetObjectItem(c, "rank");
+                int rank = rank_item != NULL ? (int)cJSON_GetNumberValue(rank_item) : INT_MAX;
+                if (wasm_version >= 8 && (dedup_id != NULL || rank_item != NULL)) {
+                    SetDedupIdAndRankForEntryInSet(matched_id, dedup_id, rank, set_id, doc_idx);
+                }
             }
             else
             { // TODO: remove

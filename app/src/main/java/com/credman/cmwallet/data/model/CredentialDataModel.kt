@@ -52,6 +52,8 @@ data class CredentialDisplayData(
     val icon: String?,
     val explainer: String? = null,
     val metadataDisplayText: String? = null,
+    val dedupId: String? = null,
+    val rank: Int = Int.MAX_VALUE,
 )
 
 fun CredentialKey.toPrivateKey(): PrivateKey {
