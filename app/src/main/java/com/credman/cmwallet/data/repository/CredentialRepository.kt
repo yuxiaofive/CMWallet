@@ -106,6 +106,22 @@ class CredentialRepository(private val context: Context) {
                 matcher = pnvMatcher
             ) {}
         )
+
+        val testPhoneNumberTokensC11n = listOf(
+            PnvTokenRegistry.TEST_PNV_1_GET_PHONE_NUMBER_C11N,
+            PnvTokenRegistry.TEST_PNV_1_VERIFY_PHONE_NUMBER_C11N,
+            PnvTokenRegistry.TEST_PNV_2_VERIFY_PHONE_NUMBER_C11N,
+        )
+
+        // Comment out below to let the other app register
+        registryManager.registerCredentials(
+            request = object : DigitalCredentialRegistry(
+                id = "openid4vp1.0-pnv-c11n",
+                credentials = PnvTokenRegistry.buildRegistryDatabase(testPhoneNumberTokensC11n),
+                matcher = pnvMatcher,
+                intentAction = RegistryManager.ACTION_GET_CREDENTIAL
+            ) {}
+        )
     }
 
     suspend fun issueCredential(requestJson: String) {
